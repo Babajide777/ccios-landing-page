@@ -1,1 +1,2 @@
-export const APIKey = "eRoS3UtbYN21vfEn2AvMRedUfaZiVkqy22vT9hiBb84";
+export const APIKey = "AIzaSyAQTbGxDCsfPH_SHl6b6u98Yuw6WKtZdNI";
+export const MapId = "cd9e562311c9f405";

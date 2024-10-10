@@ -4,114 +4,55 @@ import React, { useState, useEffect, useRef } from "react";
 import Hero from "./Components/Hero";
 import Feature from "./Components/Feature";
 import { Homestyled } from "./Styles/Home.styled";
-import { BiSolidShoppingBags, BiMapAlt } from "react-icons/bi";
-import { APIKey } from "@/apis/MapApiKey";
-// import {
-//   useGetNearestMarathonsQuery,
-//   useGetNearestGroceriesQuery,
-//   useGetNearestSpookySpasQuery
-// } from "@/apis/Features/movies/mapApiSlice";
+import { BiSolidShoppingBags } from "react-icons/bi";
+import { BiMapAlt } from "react-icons/bi";
+import { APIKey, MapId } from "@/apis/MapApiKey";
+import {
+  APIProvider,
+  Map,
+  AdvancedMarker,
+  Pin
+} from "@vis.gl/react-google-maps";
 
 const Home = () => {
-  const mapRef = useRef<HTMLDivElement | null>(null);
-  const [activeType, setActiveType] = useState<
-    "marathon" | "groceryPlant" | "spa"
-  >("marathon");
-  const [currentCoords, setCurrentCoords] = useState<{
+  const [currentPosition, setCurrentPosition] = useState<{
     lat: number;
-    lon: number;
+    lng: number;
   } | null>(null);
+  const [open, setOpen] = useState(false);
 
-  // Function to get user's current location
-  const getCurrentLocation = () => {
+  // Fetch the user's current location
+  useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         position => {
-          setCurrentCoords({
-            lat: position.coords.latitude,
-            lon: position.coords.longitude
-          });
+          const { latitude, longitude } = position.coords;
+          console.log(
+            `Your exact location: Lat: ${latitude}, Lon: ${longitude}`
+          );
+          // Update the map with the exact location
+          setCurrentPosition({ lat: latitude, lng: longitude });
         },
         error => {
           console.error("Error fetching location: ", error);
-        }
+        },
+        { enableHighAccuracy: true } // This enables high accuracy mode
       );
     } else {
       console.error("Geolocation is not supported by this browser.");
     }
-  };
-
-  // Fetch data based on activeType and current coordinates
-  const fetchLocations = () => {
-    if (!currentCoords) return { data: [] };
-
-    // switch (activeType) {
-    //   case "marathon":
-    //     return useGetNearestMarathonsQuery(currentCoords);
-    //   case "groceryPlant":
-    //     return useGetNearestGroceriesQuery(currentCoords);
-    //   case "spa":
-    //     return useGetNearestSpookySpasQuery(currentCoords);
-    //   default:
-    //     return { data: [] };
-    // }
-  };
-
-  // const { data: locations } = fetchLocations();
-
-  useEffect(() => {
-    getCurrentLocation();
   }, []);
 
-  // useEffect(() => {
-  //   if (mapRef.current && currentCoords) {
-  //     const platform = new window.H.service.Platform({ apikey: APIKey });
-  //     const defaultLayers = platform.createDefaultLayers();
-  //     const map = new window.H.Map(
-  //       mapRef.current,
-  //       defaultLayers.vector.normal.map,
-  //       {
-  //         zoom: 12,
-  //         center: { lat: currentCoords.lat, lng: currentCoords.lon }
-  //       }
-  //     );
-
-  //     const ui = window.H.ui.UI.createDefault(map, defaultLayers);
-  //     const mapEvents = new window.H.mapevents.MapEvents(map);
-  //     const behavior = new window.H.mapevents.Behavior(mapEvents);
-
-  //     // Clear existing markers
-  //     map.removeObjects(map.getObjects());
-
-  // Add markers for the fetched locations
-  //     locations?.forEach((location: any) => {
-  //       const { position, title } = location;
-  //       const marker = new window.H.map.Marker({
-  //         lat: position[0],
-  //         lng: position[1]
-  //       });
-  //       marker.setData(title);
-  //       map.addObject(marker);
-  //     });
-
-  //     // Clean up map on unmount
-  //     return () => {
-  //       map.dispose();
-  //     };
-  //   }
-  // }, [locations, currentCoords]);
-
-  // Handlers for different clicks
-  const handleMarathonMapClick = () => {
-    setActiveType("marathon");
+  const handleMarathanMapClick = () => {
+    console.log("Marathon Map clicked");
   };
 
   const handleGroceriesPlantClick = () => {
-    setActiveType("groceryPlant");
+    console.log("Groceries and Plant clicked");
   };
 
   const handleSpaClick = () => {
-    setActiveType("spa");
+    console.log("Spa clicked");
   };
 
   return (
@@ -122,23 +63,42 @@ const Home = () => {
           <Feature
             Icon={BiMapAlt}
             title="Marathons near me"
-            description="Find marathons close to you."
-            onClick={handleMarathonMapClick}
+            description="Find marathons happening near you."
+            onClick={handleMarathanMapClick}
           />
           <Feature
             Icon={BiSolidShoppingBags}
             title="Groceries & Plants "
-            description="Explore grocery stores and plant nurseries near you."
+            description="Find the nearest groceries and plants."
             onClick={handleGroceriesPlantClick}
           />
           <Feature
             Icon={BiSolidShoppingBags}
             title="Spooky Spa (Seasonal)"
-            description="Discover spooky spas around you."
+            description="Find spooky spa locations."
             onClick={handleSpaClick}
           />
         </div>
-        <div ref={mapRef} style={{ width: "100%", height: "400px" }} />
+        <APIProvider apiKey={APIKey}>
+          <div style={{ height: "100vh" }}>
+            {currentPosition ? (
+              <Map zoom={12} center={currentPosition} mapId={MapId}>
+                <AdvancedMarker
+                  position={currentPosition}
+                  onClick={() => setOpen(true)}
+                >
+                  <Pin
+                    background={"grey"}
+                    borderColor={"green"}
+                    glyphColor={"purple"}
+                  />
+                </AdvancedMarker>
+              </Map>
+            ) : (
+              <p>Loading map...</p>
+            )}
+          </div>
+        </APIProvider>
       </>
     </Homestyled>
   );
