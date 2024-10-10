@@ -1,95 +1,147 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
+import React, { useState, useEffect, useRef } from "react";
+import Hero from "./Components/Hero";
+import Feature from "./Components/Feature";
+import { Homestyled } from "./Styles/Home.styled";
+import { BiSolidShoppingBags, BiMapAlt } from "react-icons/bi";
+import { APIKey } from "@/apis/MapApiKey";
+// import {
+//   useGetNearestMarathonsQuery,
+//   useGetNearestGroceriesQuery,
+//   useGetNearestSpookySpasQuery
+// } from "@/apis/Features/movies/mapApiSlice";
+
+const Home = () => {
+  const mapRef = useRef<HTMLDivElement | null>(null);
+  const [activeType, setActiveType] = useState<
+    "marathon" | "groceryPlant" | "spa"
+  >("marathon");
+  const [currentCoords, setCurrentCoords] = useState<{
+    lat: number;
+    lon: number;
+  } | null>(null);
+
+  // Function to get user's current location
+  const getCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          setCurrentCoords({
+            lat: position.coords.latitude,
+            lon: position.coords.longitude
+          });
+        },
+        error => {
+          console.error("Error fetching location: ", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
+
+  // Fetch data based on activeType and current coordinates
+  const fetchLocations = () => {
+    if (!currentCoords) return { data: [] };
+
+    // switch (activeType) {
+    //   case "marathon":
+    //     return useGetNearestMarathonsQuery(currentCoords);
+    //   case "groceryPlant":
+    //     return useGetNearestGroceriesQuery(currentCoords);
+    //   case "spa":
+    //     return useGetNearestSpookySpasQuery(currentCoords);
+    //   default:
+    //     return { data: [] };
+    // }
+  };
+
+  // const { data: locations } = fetchLocations();
+
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+
+  // useEffect(() => {
+  //   if (mapRef.current && currentCoords) {
+  //     const platform = new window.H.service.Platform({ apikey: APIKey });
+  //     const defaultLayers = platform.createDefaultLayers();
+  //     const map = new window.H.Map(
+  //       mapRef.current,
+  //       defaultLayers.vector.normal.map,
+  //       {
+  //         zoom: 12,
+  //         center: { lat: currentCoords.lat, lng: currentCoords.lon }
+  //       }
+  //     );
+
+  //     const ui = window.H.ui.UI.createDefault(map, defaultLayers);
+  //     const mapEvents = new window.H.mapevents.MapEvents(map);
+  //     const behavior = new window.H.mapevents.Behavior(mapEvents);
+
+  //     // Clear existing markers
+  //     map.removeObjects(map.getObjects());
+
+  // Add markers for the fetched locations
+  //     locations?.forEach((location: any) => {
+  //       const { position, title } = location;
+  //       const marker = new window.H.map.Marker({
+  //         lat: position[0],
+  //         lng: position[1]
+  //       });
+  //       marker.setData(title);
+  //       map.addObject(marker);
+  //     });
+
+  //     // Clean up map on unmount
+  //     return () => {
+  //       map.dispose();
+  //     };
+  //   }
+  // }, [locations, currentCoords]);
+
+  // Handlers for different clicks
+  const handleMarathonMapClick = () => {
+    setActiveType("marathon");
+  };
+
+  const handleGroceriesPlantClick = () => {
+    setActiveType("groceryPlant");
+  };
+
+  const handleSpaClick = () => {
+    setActiveType("spa");
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+    <Homestyled>
+      <>
+        <Hero />
+        <div className="features">
+          <Feature
+            Icon={BiMapAlt}
+            title="Marathons near me"
+            description="Find marathons close to you."
+            onClick={handleMarathonMapClick}
+          />
+          <Feature
+            Icon={BiSolidShoppingBags}
+            title="Groceries & Plants "
+            description="Explore grocery stores and plant nurseries near you."
+            onClick={handleGroceriesPlantClick}
+          />
+          <Feature
+            Icon={BiSolidShoppingBags}
+            title="Spooky Spa (Seasonal)"
+            description="Discover spooky spas around you."
+            onClick={handleSpaClick}
+          />
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+        <div ref={mapRef} style={{ width: "100%", height: "400px" }} />
+      </>
+    </Homestyled>
   );
-}
+};
+
+export default Home;
