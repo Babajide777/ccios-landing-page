@@ -11,7 +11,7 @@ import {
   APIProvider,
   Map,
   AdvancedMarker,
-  Pin
+  Pin,
 } from "@vis.gl/react-google-maps";
 
 const Home = () => {
@@ -25,7 +25,7 @@ const Home = () => {
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           const { latitude, longitude } = position.coords;
           console.log(
             `Your exact location: Lat: ${latitude}, Lon: ${longitude}`
@@ -33,7 +33,7 @@ const Home = () => {
           // Update the map with the exact location
           setCurrentPosition({ lat: latitude, lng: longitude });
         },
-        error => {
+        (error) => {
           console.error("Error fetching location: ", error);
         },
         { enableHighAccuracy: true } // This enables high accuracy mode
@@ -75,7 +75,7 @@ const Home = () => {
           <Feature
             Icon={BiSolidShoppingBags}
             title="Spooky Spa (Seasonal)"
-            description="Find spooky spa locations."
+            description="Find more partners."
             onClick={handleSpaClick}
           />
         </div>
