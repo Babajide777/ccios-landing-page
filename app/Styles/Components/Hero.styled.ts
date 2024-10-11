@@ -27,32 +27,50 @@ export const Herostyled = styled.div`
       line-height: 75px;
     }
 
-    p {
-      color: white;
+    .email-text {
       margin-bottom: 20px;
     }
 
-    .button {
+    .form {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+
+      .input-field {
+        width: 300px;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
     }
 
-    .cta-button {
+    .submit-btn {
       display: flex;
       justify-content: center;
-      align-items: center;
-      background-color: #bb9457;
-      color: #1e1e1e;
-      width: 130px;
-      height: 50px;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
 
-      &:hover {
-        background-color: #d4a76a;
+      .submit {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #bb9457;
+        color: #1e1e1e;
+        width: 130px;
+        height: 50px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: #d4a76a;
+        }
       }
+    }
+
+    p {
+      color: white;
+      margin-bottom: 20px;
     }
   }
 
