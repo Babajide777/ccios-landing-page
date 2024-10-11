@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Herostyled } from "../Styles/Components/Hero.styled";
 import { supabase } from "@/lib/supabase";
 import isValidEmail from "@/lib/emailValidation";
+import { RootState } from "@/store/store";
 import { subscribe } from "@/store/subscriptionSlice";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -13,8 +14,9 @@ const Hero: React.FC = () => {
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [email, setEmail] = useState("");
   const dispatch = useDispatch();
-  const isSubscribed = useSelector(state => state.subscription.subscribed);
-
+  const isSubscribed = useSelector(
+    (state: RootState) => state.subscription.subscribed
+  );
   const handleGetStartedClick = () => {
     setShowEmailInput(true);
   };
