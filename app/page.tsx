@@ -1,25 +1,18 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Hero from "./Components/Hero";
 import Feature from "./Components/Feature";
 import { Homestyled } from "./Styles/Home.styled";
 import { BiSolidShoppingBags } from "react-icons/bi";
 import { BiMapAlt } from "react-icons/bi";
-import { APIKey, MapId } from "@/apis/MapApiKey";
-import {
-  APIProvider,
-  Map,
-  AdvancedMarker,
-  Pin
-} from "@vis.gl/react-google-maps";
+import MapComponent from "./Components/MapComponent";
 
 const Home = () => {
   const [currentPosition, setCurrentPosition] = useState<{
     lat: number;
     lng: number;
   } | null>(null);
-  const [open, setOpen] = useState(false);
 
   // Fetch the user's current location
   useEffect(() => {
@@ -36,7 +29,7 @@ const Home = () => {
         error => {
           console.error("Error fetching location: ", error);
         },
-        { enableHighAccuracy: true } // This enables high accuracy mode
+        { enableHighAccuracy: true } // Enables high accuracy mode
       );
     } else {
       console.error("Geolocation is not supported by this browser.");
@@ -68,7 +61,7 @@ const Home = () => {
           />
           <Feature
             Icon={BiSolidShoppingBags}
-            title="Groceries & Plants "
+            title="Groceries & Plants"
             description="Find the nearest groceries and plants."
             onClick={handleGroceriesPlantClick}
           />
@@ -79,26 +72,9 @@ const Home = () => {
             onClick={handleSpaClick}
           />
         </div>
-        <APIProvider apiKey={APIKey}>
-          <div style={{ height: "100vh" }}>
-            {currentPosition ? (
-              <Map zoom={12} center={currentPosition} mapId={MapId}>
-                <AdvancedMarker
-                  position={currentPosition}
-                  onClick={() => setOpen(true)}
-                >
-                  <Pin
-                    background={"grey"}
-                    borderColor={"green"}
-                    glyphColor={"purple"}
-                  />
-                </AdvancedMarker>
-              </Map>
-            ) : (
-              <p>Loading map...</p>
-            )}
-          </div>
-        </APIProvider>
+
+        {/* Pass currentPosition to MapComponent */}
+        <MapComponent currentPosition={currentPosition} />
       </>
     </Homestyled>
   );
