@@ -1,7 +1,5 @@
 "use client";
 
-// import { apiSlice } from "./api/apiSlice";
-// import auth from './Features/auth/authSlice';
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -9,25 +7,22 @@ import subscription from "./subscriptionSlice";
 
 const persistConfig = {
   key: "root",
-  storage,
-  // blacklist: [apiSlice.reducerPath],
+  storage
 };
 
 const rootReducer = combineReducers({
-  // [apiSlice.reducerPath]: apiSlice.reducer,
-  // auth,
-  subscription,
+  subscription
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: (getDefaultMiddleware) =>
+  middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
       serializableCheck: false,
-      immutableCheck: false,
+      immutableCheck: false
     }),
-  devTools: true,
+  devTools: true
 });
 
 export const persistor = persistStore(store);

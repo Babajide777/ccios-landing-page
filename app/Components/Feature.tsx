@@ -10,7 +10,7 @@ type FeatureProps = {
   title: string;
   description: string;
   iconColor?: string;
-  onClick: () => void;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
 const Feature: React.FC<FeatureProps> = ({
@@ -18,7 +18,7 @@ const Feature: React.FC<FeatureProps> = ({
   title,
   description,
   iconColor,
-  onClick,
+  onClick
 }) => {
   return (
     <Featurestyled onClick={onClick}>
