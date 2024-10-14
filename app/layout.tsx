@@ -9,7 +9,7 @@ import store from "../store/store";
 import ClientProvider from "./Components/shared/ClientProvider";
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {

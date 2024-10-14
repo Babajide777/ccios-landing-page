@@ -1,17 +1,13 @@
 "use client";
 
 import { Provider } from "react-redux";
-import { ReactNode } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "@/store/store";
+import { ClientProviderProps } from "@/lib/typeof";
 
-interface ClientProviderProps {
-  children: ReactNode;
-}
-
-const ClientProvider = ({ children }: ClientProviderProps) => {
+const ClientProvider: React.FC<ClientProviderProps> = ({ children }) => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

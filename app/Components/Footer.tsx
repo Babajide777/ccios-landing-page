@@ -7,7 +7,8 @@ const Footer: React.FC = () => {
   return (
     <Footerstyled>
       <p>
-        &copy; 2024 Vitale Sourdough Co. by Henry Hunter. All rights reserved.
+        &copy; Copyright {new Date().getFullYear()}. All Rights Reserved.
+        Cartclo
       </p>
     </Footerstyled>
   );

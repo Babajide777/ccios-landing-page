@@ -8,37 +8,18 @@ export const Headerstyled = styled.header`
   .header-content {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
-  }
-
-  .logo {
-    max-height: 60px;
-    width: auto;
-  }
-
-  nav ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    margin: 0;
-  }
-
-  nav ul li {
-    margin: 0 15px;
-  }
-
-  nav ul li a {
-    color: #bb9457;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s ease;
-  }
-
-  nav ul li a:hover {
-    color: #d4a76a;
+    .logo {
+      height: 50px;
+      width: auto;
+      border-radius: 50%;
+    }
+    P {
+      color: #ccc;
+      margin-left: 10px;
+      font-size: 20px;
+      font-weight: 900;
+    }
   }
 `;
