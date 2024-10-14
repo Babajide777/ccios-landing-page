@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Herostyled } from "../Styles/Components/Hero.styled";
 import { supabase } from "@/lib/supabase";
 import { isValidEmail } from "@/lib/emailValidation";
+import { isValidNigerianPostalCode } from "@/lib/emailValidation";
 import { RootState } from "@/store/store";
 import { subscribe } from "@/store/subscriptionSlice";
 import options from "@/lib/optionsData";
@@ -26,21 +27,7 @@ import {
   faLinkedin
 } from "@fortawesome/free-brands-svg-icons";
 import MarathonMap from "./MarathonMap";
-
-interface HeroProps {
-  step: number;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-  postalCode: string;
-  setPostalCode: React.Dispatch<React.SetStateAction<string>>;
-  selectedOption: "Yes" | "No" | null;
-  optionSelect: string;
-  // currentPosition: { lat: number; lng: number } | null;
-  handleGroceriesPlantClick: (event: any) => void;
-  handleSelectChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
-  handlePostalCodeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleCheckboxChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleMarathanMapClick: (event: any) => void;
-}
+import { HeroProps } from "@/lib/typeof";
 
 const Hero: React.FC<HeroProps> = ({
   step,
@@ -55,7 +42,6 @@ const Hero: React.FC<HeroProps> = ({
   handlePostalCodeChange,
   handleCheckboxChange
 }) => {
-  // console.log({ step });
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [currentPosition, setCurrentPosition] = useState<{
     lat: number;
@@ -86,7 +72,7 @@ const Hero: React.FC<HeroProps> = ({
         error => {
           console.error("Error fetching location: ", error);
         },
-        { enableHighAccuracy: true } // Enables high accuracy mode
+        { enableHighAccuracy: true }
       );
     } else {
       console.error("Geolocation is not supported by this browser.");
@@ -177,14 +163,23 @@ const Hero: React.FC<HeroProps> = ({
 
     let check = false;
 
+    if (!isValidNigerianPostalCode(objData["postal-code"] as string)) {
+      toast.error("Please enter a valid Nigerian zip-code");
+      check = false;
+    }
+
     if (!objData?.plants) {
       toast.error("Please let us know if you have plants");
     }
     if (objData["postal-code"] == "") {
-      toast.error("Please enter your zip code");
+      toast.error("Please enter your zip-code");
     }
 
-    if (objData?.plants && objData["postal-code"] != "") {
+    if (
+      objData?.plants &&
+      objData["postal-code"] != "" &&
+      isValidNigerianPostalCode(objData["postal-code"] as string)
+    ) {
       check = true;
     }
 

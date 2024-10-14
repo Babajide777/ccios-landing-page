@@ -7,7 +7,6 @@ import { toast, ToastContainer } from "react-toastify";
 import { Homestyled } from "./Styles/Home.styled";
 import { BiSolidShoppingBags } from "react-icons/bi";
 import { BiMapAlt } from "react-icons/bi";
-import MapComponent from "./Components/MapComponent";
 import { RootState } from "@/store/store";
 import { supabase } from "@/lib/supabase";
 import { useDispatch, useSelector } from "react-redux";
@@ -95,8 +94,6 @@ const Home = () => {
             onClick={handleSpaClick}
           />
         </div>
-
-        {/* <MapComponent currentPosition={currentPosition} /> */}
       </>
     </Homestyled>
   );
