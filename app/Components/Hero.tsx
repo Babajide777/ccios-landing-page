@@ -245,7 +245,7 @@ const Hero: React.FC<HeroProps> = ({
               </div>
             );
 
-          case 3: {
+          case 3:
             return (
               isSubscribed && (
                 <div className="hero-content">
@@ -315,7 +315,7 @@ const Hero: React.FC<HeroProps> = ({
                 </div>
               )
             );
-          }
+
           case 4:
             return (
               isSubscribed && (
