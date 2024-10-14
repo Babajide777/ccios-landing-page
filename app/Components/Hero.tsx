@@ -213,7 +213,7 @@ const Hero: React.FC<HeroProps> = ({
           case 1:
             return (
               <div className="hero-content">
-                <h1>Ccios</h1>
+                <h1>Cartclo</h1>
                 <p>Master the art of artisan bread baking</p>
                 <div className="submit-btn">
                   <button className="submit" onClick={handleGetStartedClick}>
