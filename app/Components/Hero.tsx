@@ -16,7 +16,7 @@ import {
   APIProvider,
   Map,
   AdvancedMarker,
-  Pin
+  Pin,
 } from "@vis.gl/react-google-maps";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -24,10 +24,11 @@ import {
   faGooglePlay,
   faFacebook,
   faInstagram,
-  faLinkedin
+  faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
 import MarathonMap from "./MarathonMap";
 import { HeroProps } from "@/lib/typeof";
+import MarketMap from "./MarketMap";
 
 const Hero: React.FC<HeroProps> = ({
   step,
@@ -40,7 +41,7 @@ const Hero: React.FC<HeroProps> = ({
   handleGroceriesPlantClick,
   handleMarathanMapClick,
   handlePostalCodeChange,
-  handleCheckboxChange
+  handleCheckboxChange,
 }) => {
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [currentPosition, setCurrentPosition] = useState<{
@@ -53,6 +54,7 @@ const Hero: React.FC<HeroProps> = ({
   const isSubscribed = useSelector(
     (state: RootState) => state.subscription.subscribed
   );
+
   const stateEmail = useSelector(
     (state: RootState) => state.subscription.email
   );
@@ -61,7 +63,7 @@ const Hero: React.FC<HeroProps> = ({
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           const { latitude, longitude } = position.coords;
           console.log(
             `Your exact location: Lat: ${latitude}, Lon: ${longitude}`
@@ -69,7 +71,7 @@ const Hero: React.FC<HeroProps> = ({
           // Update the map with the exact location
           setCurrentPosition({ lat: latitude, lng: longitude });
         },
-        error => {
+        (error) => {
           console.error("Error fetching location: ", error);
         },
         { enableHighAccuracy: true }
@@ -100,7 +102,7 @@ const Hero: React.FC<HeroProps> = ({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light"
+        theme: "light",
       });
       return;
     }
@@ -124,7 +126,7 @@ const Hero: React.FC<HeroProps> = ({
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "light"
+          theme: "light",
         });
       } else {
         console.log("Email saved successfully:", data);
@@ -138,7 +140,7 @@ const Hero: React.FC<HeroProps> = ({
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: "light"
+          theme: "light",
         });
       }
     } catch (error) {
@@ -151,7 +153,7 @@ const Hero: React.FC<HeroProps> = ({
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light"
+        theme: "light",
       });
     }
   };
@@ -188,7 +190,7 @@ const Hero: React.FC<HeroProps> = ({
         plants: objData?.plants == "Yes" ? true : false,
         local_garden_or_plants: objData["postal-code"],
         indoor_garden_or_conservatory: objData?.garden,
-        email: stateEmail
+        email: stateEmail,
       };
 
       const { data, error } = await supabase
@@ -212,15 +214,22 @@ const Hero: React.FC<HeroProps> = ({
 
           case 1:
             return (
-              <div className="hero-content">
-                <h1>Cartclo</h1>
-                <p>Master the art of artisan bread baking</p>
-                <div className="submit-btn">
-                  <button className="submit" onClick={handleGetStartedClick}>
-                    Get Started
-                  </button>
-                </div>
-              </div>
+              <>
+                {isSubscribed || (
+                  <div className="hero-content">
+                    <h1>Cartclo</h1>
+                    <p>connect with gym buddies worldwide</p>
+                    <div className="submit-btn">
+                      <button
+                        className="submit"
+                        onClick={handleGetStartedClick}
+                      >
+                        Get Started
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
             );
 
           case 2:
@@ -423,7 +432,9 @@ const Hero: React.FC<HeroProps> = ({
                 //     )}
                 //   </div>
                 // </APIProvider>
-                <MarathonMap />
+                <MarketMap />
+                // <MarathonMap />
+                // <GoogleMapComponent />
               )
             );
 

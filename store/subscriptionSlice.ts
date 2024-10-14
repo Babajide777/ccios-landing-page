@@ -1,3 +1,5 @@
+"use client";
+
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface SubscriptionState {
@@ -7,7 +9,7 @@ interface SubscriptionState {
 
 const initialState: SubscriptionState = {
   subscribed: false,
-  email: null
+  email: null,
 };
 
 const subscriptionSlice = createSlice({
@@ -19,11 +21,11 @@ const subscriptionSlice = createSlice({
       state.subscribed = true;
       state.email = email as string;
     },
-    unsubscribe: state => {
+    unsubscribe: (state) => {
       state.subscribed = false;
       state.email = null;
-    }
-  }
+    },
+  },
 });
 
 export const { subscribe, unsubscribe } = subscriptionSlice.actions;

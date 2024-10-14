@@ -72,7 +72,7 @@ import {
   APIProvider,
   Map,
   AdvancedMarker,
-  Pin
+  Pin,
 } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
 
@@ -95,14 +95,14 @@ const MarathonMap: React.FC = () => {
   useEffect(() => {
     const getCurrentPosition = () => {
       navigator.geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           const { latitude, longitude } = position.coords;
           setCurrentPosition({ lat: latitude, lng: longitude });
 
           // Fetch marathons nearby once we have the current position
-          fetchMarathonsNearby(latitude, longitude);
+          // fetchMarathonsNearby(latitude, longitude);
         },
-        error => console.log(error),
+        (error) => console.log(error),
         { enableHighAccuracy: true }
       );
     };
@@ -111,12 +111,12 @@ const MarathonMap: React.FC = () => {
   }, []);
 
   // Function to fetch nearest marathons
-  const fetchMarathonsNearby = async (lat: number, lng: number) => {
-    // Replace with actual API to fetch marathons
-    const response = await fetch(`/api/marathons?lat=${lat}&lng=${lng}`);
-    const data: Marathon[] = await response.json();
-    setMarathons(data);
-  };
+  // const fetchMarathonsNearby = async (lat: number, lng: number) => {
+  //   // Replace with actual API to fetch marathons
+  //   const response = await fetch(`/api/marathons?lat=${lat}&lng=${lng}`);
+  //   const data: Marathon[] = await response.json();
+  //   setMarathons(data);
+  // };
 
   const handleMarathonMapClick = (event: React.MouseEvent<HTMLDivElement>) => {
     // Handle map click if needed
@@ -137,7 +137,7 @@ const MarathonMap: React.FC = () => {
             </AdvancedMarker>
 
             {/* Markers for marathons */}
-            {marathons.map(marathon => (
+            {marathons.map((marathon) => (
               <AdvancedMarker key={marathon.id} position={marathon.location}>
                 <Pin
                   background={"blue"}
