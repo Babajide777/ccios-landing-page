@@ -5,19 +5,12 @@ import { toast, ToastContainer } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { Herostyled } from "../Styles/Components/Hero.styled";
 import { supabase } from "@/lib/supabase";
-import { isValidEmail } from "@/lib/emailValidation";
+import { isValidEmail, isValidUSZipCode } from "@/lib/emailValidation";
 import { isValidNigerianPostalCode } from "@/lib/emailValidation";
 import { RootState } from "@/store/store";
 import { subscribe } from "@/store/subscriptionSlice";
 import options from "@/lib/optionsData";
 import "react-toastify/dist/ReactToastify.css";
-import { APIKey, MapId } from "@/apis/MapApiKey";
-import {
-  APIProvider,
-  Map,
-  AdvancedMarker,
-  Pin,
-} from "@vis.gl/react-google-maps";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faApple,
@@ -26,9 +19,7 @@ import {
   faInstagram,
   faLinkedin,
 } from "@fortawesome/free-brands-svg-icons";
-import MarathonMap from "./MarathonMap";
 import { HeroProps } from "@/lib/typeof";
-import MarketMap from "./MarketMap";
 
 const Hero: React.FC<HeroProps> = ({
   step,
@@ -186,17 +177,38 @@ const Hero: React.FC<HeroProps> = ({
 
     let check = false;
 
-    if (!isValidNigerianPostalCode(objData["postal-code"] as string)) {
-      toast.error("Please enter a valid Nigerian zip-code");
-      check = false;
+    if (
+      !(
+        isValidNigerianPostalCode(objData["postal-code"] as string) ||
+        isValidUSZipCode(objData["postal-code"] as string)
+      )
+    ) {
+      toast.error("Please enter a valid Nigerian or US zip-code");
+      return;
+    }
+
+    if (!objData?.plants) {
+      toast.error("Please let us know if you have plants");
+      return;
+    }
+    if (objData["postal-code"] == "") {
+      toast.error("Please enter your zip-code");
+      return;
+    }
+
+    if (
+      objData?.plants &&
+      objData["postal-code"] != "" &&
+      (isValidNigerianPostalCode(objData["postal-code"] as string) ||
+        isValidUSZipCode(objData["postal-code"] as string))
+    ) {
+      check = true;
     }
 
     const { data: existingPlantsEmail, error: emailCheckError } = await supabase
       .from("plants and gardens")
-      .select("email")
+      .select("*")
       .eq("email", stateEmail);
-
-    console.log(existingPlantsEmail);
 
     if (emailCheckError) {
       console.error("Error checking email existence:", emailCheckError);
@@ -205,26 +217,11 @@ const Hero: React.FC<HeroProps> = ({
     }
 
     if (existingPlantsEmail && existingPlantsEmail.length > 0) {
-      toast.error("Details for Groceries and plants have been entered!", {
+      toast.error("We already have your data saved.", {
         position: "top-right",
         autoClose: 5000,
       });
       return null;
-    }
-
-    if (!objData?.plants) {
-      toast.error("Please let us know if you have plants");
-    }
-    if (objData["postal-code"] == "") {
-      toast.error("Please enter your zip-code");
-    }
-
-    if (
-      objData?.plants &&
-      objData["postal-code"] != "" &&
-      isValidNigerianPostalCode(objData["postal-code"] as string)
-    ) {
-      check = true;
     }
 
     if (check) {
@@ -451,32 +448,17 @@ const Hero: React.FC<HeroProps> = ({
           case 5:
             return (
               isSubscribed && (
-                // <APIProvider apiKey={APIKey}>
-                //   <div
-                //     className="hero-content"
-                //     onClick={handleMarathanMapClick}
-                //   >
-                //     {currentPosition ? (
-                //       <Map zoom={12} center={currentPosition} mapId={MapId}>
-                //         <AdvancedMarker
-                //           position={currentPosition}
-                //           onClick={() => setOpen(true)}
-                //         >
-                //           <Pin
-                //             background={"grey"}
-                //             borderColor={"green"}
-                //             glyphColor={"purple"}
-                //           />
-                //         </AdvancedMarker>
-                //       </Map>
-                //     ) : (
-                //       <p>Loading map...</p>
-                //     )}
-                //   </div>
-                // </APIProvider>
-                <MarketMap />
-                // <MarathonMap />
-                // <GoogleMapComponent />
+                <iframe
+                  src="https://findmymarathon.com/location.php"
+                  width="100%"
+                  height="100%"
+                  className="hero-content"
+                  // frameBorder="0"
+                  // marginHeight="0"
+                  // marginWidth="0"
+                >
+                  Loading…
+                </iframe>
               )
             );
 
