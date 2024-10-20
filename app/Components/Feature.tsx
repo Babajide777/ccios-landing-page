@@ -1,7 +1,5 @@
 "use client";
 
-//jkj
-// Feature.js
 import React from "react";
 import { Featurestyled } from "../Styles/Components/Feature.styled";
 
@@ -18,7 +16,7 @@ const Feature: React.FC<FeatureProps> = ({
   title,
   description,
   iconColor,
-  onClick
+  onClick,
 }) => {
   return (
     <Featurestyled onClick={onClick}>
