@@ -11,15 +11,12 @@ import { RootState } from "@/store/store";
 import { subscribe } from "@/store/subscriptionSlice";
 import options from "@/lib/optionsData";
 import "react-toastify/dist/ReactToastify.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faApple,
-  faGooglePlay,
-  faFacebook,
-  faInstagram,
-  faLinkedin,
-} from "@fortawesome/free-brands-svg-icons";
 import { HeroProps } from "@/lib/typeof";
+import { FaApple } from "react-icons/fa";
+import { IoLogoGooglePlaystore } from "react-icons/io5";
+import { FaFacebook } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
 
 const Hero: React.FC<HeroProps> = ({
   step,
@@ -377,9 +374,8 @@ const Hero: React.FC<HeroProps> = ({
                         rel="noopener noreferrer"
                         className="social-size"
                       >
-                        <FontAwesomeIcon icon={faGooglePlay} size="2x" />
+                        <IoLogoGooglePlaystore size="2rem" />
                         <span className="social-text">
-                          {" "}
                           Get it on <span className="bold">Play Store</span>
                         </span>
                       </a>
@@ -391,9 +387,8 @@ const Hero: React.FC<HeroProps> = ({
                         rel="noopener noreferrer"
                         className="social-size"
                       >
-                        <FontAwesomeIcon icon={faApple} size="2x" />
+                        <FaApple size="2rem" />
                         <span className="social-text">
-                          {" "}
                           Get it on the <span className="bold">App Store</span>
                         </span>
                       </a>
@@ -405,9 +400,8 @@ const Hero: React.FC<HeroProps> = ({
                         rel="noopener noreferrer"
                         className="social-size"
                       >
-                        <FontAwesomeIcon icon={faFacebook} size="2x" />
+                        <FaFacebook size="2rem" />
                         <span className="social-text">
-                          {" "}
                           Follow us on <span className="bold">Facebook</span>
                         </span>
                       </a>
@@ -419,9 +413,8 @@ const Hero: React.FC<HeroProps> = ({
                         rel="noopener noreferrer"
                         className="social-size"
                       >
-                        <FontAwesomeIcon icon={faLinkedin} size="2x" />
+                        <FaLinkedin size="2rem" />
                         <span className="social-text">
-                          {" "}
                           Follow us on <span className="bold">Linkedin</span>
                         </span>
                       </a>
@@ -433,9 +426,8 @@ const Hero: React.FC<HeroProps> = ({
                         rel="noopener noreferrer"
                         className="social-size"
                       >
-                        <FontAwesomeIcon icon={faInstagram} size="2x" />
+                        <FaInstagram size="2rem" />
                         <span className="social-text">
-                          {" "}
                           Follow us on <span className="bold"> Instagram</span>
                         </span>
                       </a>
